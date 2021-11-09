@@ -1,6 +1,6 @@
-import { useFormik } from 'formik';
 import React from 'react';
-
+import { useFormik } from 'formik';
+import * as yup from "yup"
 const initialValues = {
     email: '',
     password: ''
@@ -8,33 +8,39 @@ const initialValues = {
 const onSubmit = (values) => {
     console.log(values);
 }
-const validate = (values) => {
-    let errors = {}
-    // email
-    if (!values.email) {
-        errors.email = 'Required'
-    } else if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(values.email)) {
-        errors.email = 'Invaild E-mail format'
-    }
-    //password
-    if (!values.password) {
-        errors.password = 'Required'
-    }
-    return errors
-}
+// const validate = (values) => {
+//     let errors = {}
+//     // email
+//     if (!values.email) {
+//         errors.email = 'Required'
+//     } else if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(values.email)) {
+//         errors.email = 'Invaild E-mail format'
+//     }
+//     //password
+//     if (!values.password) {
+//         errors.password = 'Required'
+//     }
+//     return errors
+// }
+const validationSchema = yup.object({
+    email: yup.string().email('invaild Format for E-mail').required('E-mail is required field'),
+    password: yup.string().required('password is required field')
+})
 const SignInForm = () => {
     const formik = useFormik({
         initialValues,
         onSubmit,
-        validate
+        // validate,
+        validationSchema
     })
     console.log(formik.errors);
     return (
         <>
             <div className="container">
                 <div className="row py-5 ">
-                    <div className="col-8  bg-dark">
-                        <form onSubmit={formik.handleSubmit}>
+                    <div className="col-8  shadow rounded">
+                        <form onSubmit={formik.handleSubmit}
+                            onBlur={formik.handleBlur}>
                             <div className="form-group text-left">
                                 <label className="tw-bold text-white" htmlFor="email">Email address</label>
                                 <input type="email"
@@ -46,7 +52,7 @@ const SignInForm = () => {
                                     onChange={formik.handleChange}
                                     value={formik.values.email}
                                 />
-                                {formik.errors.email ?
+                                {formik.touched.email && formik.errors.email ?
                                     <div className="alert alert-danger my-3" role="alert">
                                         {formik.errors.email}
                                     </div>
@@ -62,7 +68,7 @@ const SignInForm = () => {
                                     onChange={formik.handleChange}
                                     value={formik.values.password}
                                 />
-                                {formik.errors.password ? <div className="alert alert-danger my-3" role="alert">
+                                {formik.touched.password && formik.errors.password ? <div className="alert alert-danger my-3" role="alert">
                                     {formik.errors.password}
                                 </div> : null}
                             </div>
