@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
+import ErrorText from './ErrorText'
 function Input(props) {
     const { label, name, ...rest } = props
     return (
@@ -11,7 +12,7 @@ function Input(props) {
                 name={name}
                 {...rest}
             />
-            <ErrorMessage/>
+            <ErrorMessage name={name}  component={ErrorText}/>
 
         </div>
     )
