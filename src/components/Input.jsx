@@ -12,7 +12,7 @@ function Input(props) {
                 name={name}
                 {...rest}
             />
-            <ErrorMessage name={name}  component={ErrorText}/>
+            <ErrorMessage name={name} component={ErrorText} />
 
         </div>
     )
